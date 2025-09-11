@@ -1,0 +1,8 @@
+/home/user/Downloads/lanmessenger/build/Android_Qt_6_9_2_android_arm64_v8a_Clang_arm64_v8a-Debug/CMakeFiles/apk.dir
+/home/user/Downloads/lanmessenger/build/Android_Qt_6_9_2_android_arm64_v8a_Clang_arm64_v8a-Debug/CMakeFiles/aab.dir
+/home/user/Downloads/lanmessenger/build/Android_Qt_6_9_2_android_arm64_v8a_Clang_arm64_v8a-Debug/CMakeFiles/aar.dir
+/home/user/Downloads/lanmessenger/build/Android_Qt_6_9_2_android_arm64_v8a_Clang_arm64_v8a-Debug/CMakeFiles/lanmessenger.dir
+/home/user/Downloads/lanmessenger/build/Android_Qt_6_9_2_android_arm64_v8a_Clang_arm64_v8a-Debug/CMakeFiles/edit_cache.dir
+/home/user/Downloads/lanmessenger/build/Android_Qt_6_9_2_android_arm64_v8a_Clang_arm64_v8a-Debug/CMakeFiles/rebuild_cache.dir
+/home/user/Downloads/lanmessenger/build/Android_Qt_6_9_2_android_arm64_v8a_Clang_arm64_v8a-Debug/CMakeFiles/lanmessenger_autogen_timestamp_deps.dir
+/home/user/Downloads/lanmessenger/build/Android_Qt_6_9_2_android_arm64_v8a_Clang_arm64_v8a-Debug/CMakeFiles/lanmessenger_autogen.dir
