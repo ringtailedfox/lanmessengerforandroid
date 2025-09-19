@@ -1764,12 +1764,12 @@ Désirez-vous vraiment continuer?</translation>
 <context>
     <name>lmcStrings</name>
     <message>
-        <location filename="strings.cpp" line="55"/>
+        <location filename="lmc_strings.cpp" line="55"/>
         <source>LAN Messenger</source>
         <translation>LAN Messenger</translation>
     </message>
     <message>
-        <location filename="strings.cpp" line="61"/>
+        <location filename="lmc_strings.cpp" line="61"/>
         <source>LAN Messenger is a free peer-to-peer messaging application for
 intra-network communication and does not require a server.
 LAN Messenger works on essentially every popular desktop platform.</source>
@@ -1778,132 +1778,132 @@ les échanges intra-réseau de communication et ne nécessite pas un serveur.
 LAN Messenger fonctionne essentiellement sur chaque plate-forme de bureau populaire.</translation>
     </message>
     <message>
-        <location filename="strings.cpp" line="69"/>
+        <location filename="lmc_strings.cpp" line="69"/>
         <source>Automatic</source>
         <translation>Automatique</translation>
     </message>
     <message>
-        <location filename="strings.cpp" line="75"/>
+        <location filename="lmc_strings.cpp" line="75"/>
         <source>Small text</source>
         <translation>Petit texte</translation>
     </message>
     <message>
-        <location filename="strings.cpp" line="76"/>
+        <location filename="lmc_strings.cpp" line="76"/>
         <source>Medium text</source>
         <translation>Texte moyen</translation>
     </message>
     <message>
-        <location filename="strings.cpp" line="77"/>
+        <location filename="lmc_strings.cpp" line="77"/>
         <source>Large text</source>
         <translation>Texte grand</translation>
     </message>
     <message>
-        <location filename="strings.cpp" line="84"/>
+        <location filename="lmc_strings.cpp" line="84"/>
         <source>Available</source>
         <translation>Disponible</translation>
     </message>
     <message>
-        <location filename="strings.cpp" line="85"/>
+        <location filename="lmc_strings.cpp" line="85"/>
         <source>Busy</source>
         <translation>Occupés</translation>
     </message>
     <message>
-        <location filename="strings.cpp" line="86"/>
+        <location filename="lmc_strings.cpp" line="86"/>
         <source>Do Not Disturb</source>
         <translation>Ne pas déranger</translation>
     </message>
     <message>
-        <location filename="strings.cpp" line="87"/>
+        <location filename="lmc_strings.cpp" line="87"/>
         <source>Be Right Back</source>
         <translation>De retour dans</translation>
     </message>
     <message>
-        <location filename="strings.cpp" line="88"/>
+        <location filename="lmc_strings.cpp" line="88"/>
         <source>Away</source>
         <translation>Suite</translation>
     </message>
     <message>
-        <location filename="strings.cpp" line="89"/>
+        <location filename="lmc_strings.cpp" line="89"/>
         <source>Appear Offline</source>
         <translation>Apparaître hors ligne</translation>
     </message>
     <message>
-        <location filename="strings.cpp" line="96"/>
+        <location filename="lmc_strings.cpp" line="96"/>
         <source>Incoming message</source>
         <translation>Message entrant</translation>
     </message>
     <message>
-        <location filename="strings.cpp" line="97"/>
+        <location filename="lmc_strings.cpp" line="97"/>
         <source>User is online</source>
         <translation>L&apos;utilisateur est en ligne</translation>
     </message>
     <message>
-        <location filename="strings.cpp" line="98"/>
+        <location filename="lmc_strings.cpp" line="98"/>
         <source>User is offline</source>
         <translation>L&apos;utilisateur est déconnecté</translation>
     </message>
     <message>
-        <location filename="strings.cpp" line="99"/>
+        <location filename="lmc_strings.cpp" line="99"/>
         <source>Incoming file transfer</source>
         <translation>Transfert de fichiers entrants</translation>
     </message>
     <message>
-        <location filename="strings.cpp" line="100"/>
+        <location filename="lmc_strings.cpp" line="100"/>
         <source>File transfer completed</source>
         <translation>Transfert de fichiers est terminée</translation>
     </message>
     <message>
-        <location filename="strings.cpp" line="101"/>
+        <location filename="lmc_strings.cpp" line="101"/>
         <source>Incoming public message</source>
         <translation>Entrant message publique</translation>
     </message>
     <message>
-        <location filename="strings.cpp" line="108"/>
+        <location filename="lmc_strings.cpp" line="108"/>
         <source>5 minutes</source>
         <translation>5 minutes</translation>
     </message>
     <message>
-        <location filename="strings.cpp" line="109"/>
+        <location filename="lmc_strings.cpp" line="109"/>
         <source>10 minutes</source>
         <translation>10 minutes</translation>
     </message>
     <message>
-        <location filename="strings.cpp" line="110"/>
+        <location filename="lmc_strings.cpp" line="110"/>
         <source>15 minutes</source>
         <translation>15 minutes</translation>
     </message>
     <message>
-        <location filename="strings.cpp" line="111"/>
+        <location filename="lmc_strings.cpp" line="111"/>
         <source>20 minutes</source>
         <translation>20 minutes</translation>
     </message>
     <message>
-        <location filename="strings.cpp" line="112"/>
+        <location filename="lmc_strings.cpp" line="112"/>
         <source>30 minutes</source>
         <translation>30 minutes</translation>
     </message>
     <message>
-        <location filename="strings.cpp" line="113"/>
+        <location filename="lmc_strings.cpp" line="113"/>
         <source>45 minutes</source>
         <translation>45 minutes</translation>
     </message>
     <message>
-        <location filename="strings.cpp" line="114"/>
+        <location filename="lmc_strings.cpp" line="114"/>
         <source>60 minutes</source>
         <translation>60 minutes</translation>
     </message>
     <message>
-        <location filename="strings.cpp" line="115"/>
+        <location filename="lmc_strings.cpp" line="115"/>
         <source>Never</source>
         <translation>Jamais</translation>
     </message>
     <message>
-        <location filename="strings.cpp" line="122"/>
+        <location filename="lmc_strings.cpp" line="122"/>
         <source>Detailed</source>
         <translation>Détaillé</translation>
     </message>
     <message>
-        <location filename="strings.cpp" line="123"/>
+        <location filename="lmc_strings.cpp" line="123"/>
         <source>Compact</source>
         <translation>Compacte</translation>
     </message>

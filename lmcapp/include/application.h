@@ -25,9 +25,10 @@
 #ifndef APPLICATION_H
 #define APPLICATION_H
 
-#include <qtsingleapplication.h>
+#include "../src/qtsingleapplication.h"
 #include <QHash>
 #include <QStringList>
+
 class QDir;
 class QTranslator;
 

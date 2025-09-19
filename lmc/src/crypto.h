@@ -80,7 +80,7 @@ public:
 	QByteArray publicKey;
 
 private:
-	RSA* pRsa;
+	EVP_PKEY* pKey;
 	QMap<QString, EVP_CIPHER_CTX> encryptMap;
 	QMap<QString, EVP_CIPHER_CTX> decryptMap;
 	int bits;

@@ -1,11 +1,11 @@
 /****************************************************************************
 **
 ** This file is part of LAN Messenger.
-** 
+**
 ** Copyright (c) 2010 - 2012 Qualia Digital Solutions.
-** 
+**
 ** Contact:  qualiatech@gmail.com
-** 
+**
 ** LAN Messenger is free software: you can redistribute it and/or modify
 ** it under the terms of the GNU General Public License as published by
 ** the Free Software Foundation, either version 3 of the License, or
@@ -23,16 +23,18 @@
 
 
 #include <QDesktopServices>
-#include <QDesktopWidget>
+#include <QGuiApplication>
+#include <QScreen>
 #include <QUrl>
 #include "transferwindow.h"
 
 lmcTransferWindow::lmcTransferWindow(QWidget *parent) : QWidget(parent) {
 	ui.setupUi(this);
-	QRect scr = QApplication::desktop()->screenGeometry();
-	move(scr.center() - rect().center());
+	QScreen* screen = QGuiApplication::primaryScreen();
+     QRect screenRect = screen->geometry();
+     move(screenRect.center() - rect().center());
 
-	connect(ui.lvTransferList, SIGNAL(currentRowChanged(int)), 
+	connect(ui.lvTransferList, SIGNAL(currentRowChanged(int)),
 		this, SLOT(lvTransferList_currentRowChanged(int)));
 	connect(ui.lvTransferList, SIGNAL(activated(const QModelIndex&)),
 		this, SLOT(lvTransferList_activated(const QModelIndex&)));
@@ -119,7 +121,7 @@ void lmcTransferWindow::createTransfer(MessageType type, FileMode mode, QString*
 void lmcTransferWindow::receiveMessage(MessageType type, QString* lpszUserId, XmlMessage* pMessage) {
     Q_UNUSED(type);
     Q_UNUSED(lpszUserId);
-	
+
 	int fileMode = Helper::indexOf(FileModeNames, FM_Max, pMessage->data(XN_MODE));
 	int fileOp = Helper::indexOf(FileOpNames, FO_Max, pMessage->data(XN_FILEOP));
 	QString id = pMessage->data(XN_FILEID);
@@ -246,7 +248,7 @@ void lmcTransferWindow::lvTransferList_currentRowChanged(int currentRow) {
 
 void lmcTransferWindow::lvTransferList_activated(const QModelIndex& index) {
 	FileView* view = ui.lvTransferList->item(index.row());
-	
+
 	QDesktopServices::openUrl(QUrl::fromLocalFile(view->filePath));
 }
 
@@ -301,10 +303,10 @@ void lmcTransferWindow::createToolBar(void) {
 	pToolBar->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
 	ui.toolBarLayout->addWidget(pToolBar);
 
-	pactCancel = pToolBar->addAction(QIcon(QPixmap(IDR_STOP, "PNG")), "Cancel", 
+	pactCancel = pToolBar->addAction(QIcon(QPixmap(IDR_STOP, "PNG")), "Cancel",
 		this, SLOT(btnCancel_clicked()));
 	pToolBar->addSeparator();
-	pactShowFolder = pToolBar->addAction(QIcon(QPixmap(IDR_FOLDER, "PNG")), "Show In Folder", 
+	pactShowFolder = pToolBar->addAction(QIcon(QPixmap(IDR_FOLDER, "PNG")), "Show In Folder",
 		this, SLOT(btnShowFolder_clicked()));
 	pactRemove = pToolBar->addAction(QIcon(QPixmap(IDR_DECLINE, "PNG")), "Remove From List",
 		this, SLOT(btnRemove_clicked()));
@@ -395,7 +397,7 @@ void lmcTransferWindow::clearList(void) {
 		FileView* view = ui.lvTransferList->item(index);
 		if(view->state < FileView::TS_Complete)
 			continue;
-		
+
 		ui.lvTransferList->removeItem(index);
         index--;
 	}
@@ -410,3 +412,4 @@ void lmcTransferWindow::updateProgress(FileView* view, qint64 currentPos) {
     view->speedDisplay = Helper::formatSize(view->speed) + tr("/sec");
     view->timeDisplay = formatTime(view->fileSize - view->position, view->speed);
 }
+

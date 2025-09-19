@@ -54,10 +54,10 @@ class lmcChatRoomWindow : public QWidget
     Q_OBJECT
 
 public:
-	explicit lmcChatRoomWindow(QWidget *parent = 0);
+	explicit lmcChatRoomWindow(QWidget *parent = nullptr, Qt::WindowFlags flags = {});
 	~lmcChatRoomWindow();
 
-	void init(User* pLocalUser, bool connected, QString thread = QString::null);
+	void init(User* pLocalUser, bool connected, QString thread = QString());  // ✅
 	void show(void);
 	void stop(void);
 	void addUser(User* pUser);

@@ -26,77 +26,90 @@
 #include "crypto.h"
 
 lmcCrypto::lmcCrypto(void) {
-	pRsa = NULL;
-	encryptMap.clear();
-	decryptMap.clear();
-	bits = 1024;
-	exponent = 65537;
+    pKey = nullptr;
+    encryptMap.clear();
+    decryptMap.clear();
+    bits = 1024;
+    exponent = 65537;
 }
 
 lmcCrypto::~lmcCrypto(void) {
-	RSA_free(pRsa);
+    EVP_PKEY_free(pKey);
 }
 
 //	creates an RSA key pair and returns the string representation of the public key
 QByteArray lmcCrypto::generateRSA(void) {
-	unsigned char* buf = (unsigned char*)malloc(bits);
-	RAND_seed(buf, bits);
-	pRsa = RSA_generate_key(bits, exponent, NULL, NULL);
+    EVP_PKEY_CTX* ctx = EVP_PKEY_CTX_new_id(EVP_PKEY_RSA, NULL);
+    EVP_PKEY_keygen_init(ctx);
+    EVP_PKEY_CTX_set_rsa_keygen_bits(ctx, bits);
+    EVP_PKEY_keygen(ctx, &pKey);
+    EVP_PKEY_CTX_free(ctx);
 
-	BIO* bio = BIO_new(BIO_s_mem());
-	PEM_write_bio_RSAPublicKey(bio, pRsa);
-	int keylen = BIO_pending(bio);
-	char* pem_key = (char*)calloc(keylen + 1, 1);
-	BIO_read(bio, pem_key, keylen);
-	publicKey = QByteArray(pem_key, keylen);
-	BIO_free_all(bio);
-	free(pem_key);
-	free(buf);
+    BIO* bio = BIO_new(BIO_s_mem());
+    PEM_write_bio_PUBKEY(bio, pKey);  // Modern format
+    int keylen = BIO_pending(bio);
+    char* pem_key = (char*)calloc(keylen + 1, 1);
+    BIO_read(bio, pem_key, keylen);
+    publicKey = QByteArray(pem_key, keylen);
+    BIO_free_all(bio);
+    free(pem_key);
 
-	return publicKey;
+    return publicKey;
 }
 
 //	generates a random aes key and iv, and encrypts it with the public key
 QByteArray lmcCrypto::generateAES(QString* lpszUserId, QByteArray& pubKey) {
-	char* pemKey = pubKey.data();
-	RSA* rsa = RSA_new();
-	BIO* bio = BIO_new_mem_buf(pemKey, pubKey.length());
-	PEM_read_bio_RSAPublicKey(bio, &rsa, NULL, NULL);
+EVP_PKEY* pubKeyObj = nullptr;
+BIO* bio = BIO_new_mem_buf(pubKey.data(), pubKey.length());
+PEM_read_bio_PUBKEY(bio, &pubKeyObj, NULL, NULL);
+BIO_free(bio);
 
-	int keyDataLen = 32;
-	unsigned char* keyData = (unsigned char*)malloc(keyDataLen);
-	RAND_bytes(keyData, keyDataLen);
-	int keyLen = 32;
-	int ivLen = EVP_CIPHER_iv_length(EVP_aes_256_cbc());
-	int keyIvLen = keyLen + ivLen;
-	unsigned char* keyIv = (unsigned char*)malloc(keyIvLen);
-	int rounds = 5;
-	keyLen = EVP_BytesToKey(EVP_aes_256_cbc(), EVP_sha1(), NULL, keyData, keyDataLen, rounds, keyIv, keyIv + keyLen);
+int keyDataLen = 32;
+unsigned char* keyData = (unsigned char*)malloc(keyDataLen);
+RAND_bytes(keyData, keyDataLen);
+int keyLen = 32;
+int ivLen = EVP_CIPHER_iv_length(EVP_aes_256_cbc());
+int keyIvLen = keyLen + ivLen;
+unsigned char* keyIv = (unsigned char*)malloc(keyIvLen);
+int rounds = 5;
+keyLen = EVP_BytesToKey(EVP_aes_256_cbc(), EVP_sha1(), NULL, keyData, keyDataLen, rounds, keyIv, keyIv + keyLen);
 
-	EVP_CIPHER_CTX ectx, dctx;
-	EVP_EncryptInit_ex(ectx.ptr(), EVP_aes_256_cbc(), NULL, keyIv, keyIv + keyLen);
-	encryptMap.insert(*lpszUserId, ectx);
-	EVP_CIPHER_CTX_init(dctx.ptr());
-	EVP_DecryptInit_ex(dctx.ptr(), EVP_aes_256_cbc(), NULL, keyIv, keyIv + keyLen);
-	decryptMap.insert(*lpszUserId, dctx);
+EVP_CIPHER_CTX ectx, dctx;
+EVP_EncryptInit_ex(ectx.ptr(), EVP_aes_256_cbc(), NULL, keyIv, keyIv + keyLen);
+encryptMap.insert(*lpszUserId, ectx);
+EVP_CIPHER_CTX_init(dctx.ptr());
+EVP_DecryptInit_ex(dctx.ptr(), EVP_aes_256_cbc(), NULL, keyIv, keyIv + keyLen);
+decryptMap.insert(*lpszUserId, dctx);
 
-	unsigned char* eKeyIv = (unsigned char*)malloc(RSA_size(rsa));
-	int eKeyIvLen = RSA_public_encrypt(keyIvLen, keyIv, eKeyIv, rsa, RSA_PKCS1_OAEP_PADDING);
-	QByteArray baKeyIv((char*)eKeyIv, eKeyIvLen);
+EVP_PKEY_CTX* encCtx = EVP_PKEY_CTX_new(pubKeyObj, NULL);
+EVP_PKEY_encrypt_init(encCtx);
+EVP_PKEY_CTX_set_rsa_padding(encCtx, RSA_PKCS1_OAEP_PADDING);
+size_t outlen = 0;
+EVP_PKEY_encrypt(encCtx, NULL, &outlen, keyIv, keyIvLen);
+unsigned char* eKeyIv = (unsigned char*)malloc(outlen);
+EVP_PKEY_encrypt(encCtx, eKeyIv, &outlen, keyIv, keyIvLen);
+EVP_PKEY_CTX_free(encCtx);
 
-	BIO_free_all(bio);
-	RSA_free(rsa);
-	free(keyIv);
-	free(eKeyIv);
-	free(keyData);
+QByteArray baKeyIv((char*)eKeyIv, outlen);
 
-	return baKeyIv;
+EVP_PKEY_free(pubKeyObj);
+free(keyIv);
+free(eKeyIv);
+free(keyData);
+
+return baKeyIv;
 }
 
 //	decrypts the aes key and iv with the private key
 void lmcCrypto::retreiveAES(QString* lpszUserId, QByteArray& aesKeyIv) {
-	unsigned char* keyIv = (unsigned char*)malloc(RSA_size(pRsa));
-    RSA_private_decrypt(aesKeyIv.length(), (unsigned char*)aesKeyIv.data(), keyIv, pRsa, RSA_PKCS1_OAEP_PADDING);
+    EVP_PKEY_CTX* decCtx = EVP_PKEY_CTX_new(pKey, NULL);
+    EVP_PKEY_decrypt_init(decCtx);
+    EVP_PKEY_CTX_set_rsa_padding(decCtx, RSA_PKCS1_OAEP_PADDING);
+    size_t outlen = 0;
+    EVP_PKEY_decrypt(decCtx, NULL, &outlen, (unsigned char*)aesKeyIv.data(), aesKeyIv.length());
+    unsigned char* keyIv = (unsigned char*)malloc(outlen);
+    EVP_PKEY_decrypt(decCtx, keyIv, &outlen, (unsigned char*)aesKeyIv.data(), aesKeyIv.length());
+    EVP_PKEY_CTX_free(decCtx);
 
 	int keyLen = 32;
 	EVP_CIPHER_CTX ectx, dctx;

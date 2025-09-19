@@ -1,0 +1,97 @@
+-- The C compiler identification is Clang 18.0.3
+-- The CXX compiler identification is Clang 18.0.3
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: /home/user/android/ndk/27.2.12479018/toolchains/llvm/prebuilt/linux-x86_64/bin/clang - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /home/user/android/ndk/27.2.12479018/toolchains/llvm/prebuilt/linux-x86_64/bin/clang++ - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Qt6_DIR is set to: 
+-- CMAKE_PREFIX_PATH is: /home/user/Qt/6.9.2/android_arm64_v8a
+-- CMake sees ANDROID_ABI as: arm64-v8a
+-- Configuring done (10.8s)
+CMake Warning (dev) in lmc/CMakeLists.txt:
+  AUTOGEN: No valid Qt version found for target lmc.  AUTOMOC, AUTOUIC and
+  AUTORCC disabled.  Consider adding:
+
+    find_package(Qt<QTVERSION> COMPONENTS Widgets)
+
+  to your CMakeLists.txt file.
+This warning is for project developers.  Use -Wno-dev to suppress it.
+
+CMake Warning (dev) in lmcapp/CMakeLists.txt:
+  AUTOGEN: No valid Qt version found for target lmcapp.  AUTOMOC, AUTOUIC and
+  AUTORCC disabled.  Consider adding:
+
+    find_package(Qt<QTVERSION> COMPONENTS Widgets)
+
+  to your CMakeLists.txt file.
+This warning is for project developers.  Use -Wno-dev to suppress it.
+
+-- Generating done (0.0s)
+CMake Warning:
+  Manually-specified variables were not used by the project:
+
+    ANDROID_PACKAGE_SOURCE_DIR
+
+
+-- Build files have been written to: /home/user/Downloads/lanmessenger/build-arm64
+[1/52] Building CXX object lmc/CMakeFiles/lmc.dir/src/chathelper.cpp.o
+FAILED: lmc/CMakeFiles/lmc.dir/src/chathelper.cpp.o 
+/home/user/android/ndk/27.2.12479018/toolchains/llvm/prebuilt/linux-x86_64/bin/clang++ --target=aarch64-none-linux-android30 --sysroot=/home/user/android/ndk/27.2.12479018/toolchains/llvm/prebuilt/linux-x86_64/sysroot  -I/home/user/Downloads/lanmessenger/lmc/include -I/home/user/Downloads/lanmessenger/lmc/src -isystem /home/user/Qt/6.9.2/android_arm64_v8a/include/QtCore -isystem /home/user/Qt/6.9.2/android_arm64_v8a/include/QtGui -isystem /home/user/Qt/6.9.2/android_arm64_v8a/include/QtWidgets -isystem /home/user/Qt/6.9.2/android_arm64_v8a/include/QtXml -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security   -O2 -g -DNDEBUG -fPIC -MD -MT lmc/CMakeFiles/lmc.dir/src/chathelper.cpp.o -MF lmc/CMakeFiles/lmc.dir/src/chathelper.cpp.o.d -o lmc/CMakeFiles/lmc.dir/src/chathelper.cpp.o -c /home/user/Downloads/lanmessenger/lmc/src/chathelper.cpp
+In file included from /home/user/Downloads/lanmessenger/lmc/src/chathelper.cpp:25:
+In file included from /home/user/Qt/6.9.2/android_arm64_v8a/include/QtCore/QFile:1:
+/home/user/Qt/6.9.2/android_arm64_v8a/include/QtCore/qfile.h:9:10: fatal error: 'QtCore/qfiledevice.h' file not found
+    9 | #include <QtCore/qfiledevice.h>
+      |          ^~~~~~~~~~~~~~~~~~~~~~
+1 error generated.
+[2/52] Building CXX object lmc/CMakeFiles/lmc.dir/src/aboutdialog.cpp.o
+FAILED: lmc/CMakeFiles/lmc.dir/src/aboutdialog.cpp.o 
+/home/user/android/ndk/27.2.12479018/toolchains/llvm/prebuilt/linux-x86_64/bin/clang++ --target=aarch64-none-linux-android30 --sysroot=/home/user/android/ndk/27.2.12479018/toolchains/llvm/prebuilt/linux-x86_64/sysroot  -I/home/user/Downloads/lanmessenger/lmc/include -I/home/user/Downloads/lanmessenger/lmc/src -isystem /home/user/Qt/6.9.2/android_arm64_v8a/include/QtCore -isystem /home/user/Qt/6.9.2/android_arm64_v8a/include/QtGui -isystem /home/user/Qt/6.9.2/android_arm64_v8a/include/QtWidgets -isystem /home/user/Qt/6.9.2/android_arm64_v8a/include/QtXml -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security   -O2 -g -DNDEBUG -fPIC -MD -MT lmc/CMakeFiles/lmc.dir/src/aboutdialog.cpp.o -MF lmc/CMakeFiles/lmc.dir/src/aboutdialog.cpp.o.d -o lmc/CMakeFiles/lmc.dir/src/aboutdialog.cpp.o -c /home/user/Downloads/lanmessenger/lmc/src/aboutdialog.cpp
+/home/user/Downloads/lanmessenger/lmc/src/aboutdialog.cpp:25:10: fatal error: 'QDesktopWidget' file not found
+   25 | #include <QDesktopWidget>
+      |          ^~~~~~~~~~~~~~~~
+1 error generated.
+[3/52] Building CXX object lmc/CMakeFiles/lmc.dir/src/broadcastwindow.cpp.o
+FAILED: lmc/CMakeFiles/lmc.dir/src/broadcastwindow.cpp.o 
+/home/user/android/ndk/27.2.12479018/toolchains/llvm/prebuilt/linux-x86_64/bin/clang++ --target=aarch64-none-linux-android30 --sysroot=/home/user/android/ndk/27.2.12479018/toolchains/llvm/prebuilt/linux-x86_64/sysroot  -I/home/user/Downloads/lanmessenger/lmc/include -I/home/user/Downloads/lanmessenger/lmc/src -isystem /home/user/Qt/6.9.2/android_arm64_v8a/include/QtCore -isystem /home/user/Qt/6.9.2/android_arm64_v8a/include/QtGui -isystem /home/user/Qt/6.9.2/android_arm64_v8a/include/QtWidgets -isystem /home/user/Qt/6.9.2/android_arm64_v8a/include/QtXml -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security   -O2 -g -DNDEBUG -fPIC -MD -MT lmc/CMakeFiles/lmc.dir/src/broadcastwindow.cpp.o -MF lmc/CMakeFiles/lmc.dir/src/broadcastwindow.cpp.o.d -o lmc/CMakeFiles/lmc.dir/src/broadcastwindow.cpp.o -c /home/user/Downloads/lanmessenger/lmc/src/broadcastwindow.cpp
+In file included from /home/user/Downloads/lanmessenger/lmc/src/broadcastwindow.cpp:25:
+In file included from /home/user/Qt/6.9.2/android_arm64_v8a/include/QtWidgets/QMessageBox:1:
+/home/user/Qt/6.9.2/android_arm64_v8a/include/QtWidgets/qmessagebox.h:7:10: fatal error: 'QtWidgets/qtwidgetsglobal.h' file not found
+    7 | #include <QtWidgets/qtwidgetsglobal.h>
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+1 error generated.
+[4/52] Building CXX object lmc/CMakeFiles/lmc.dir/src/chatwindow.cpp.o
+FAILED: lmc/CMakeFiles/lmc.dir/src/chatwindow.cpp.o 
+/home/user/android/ndk/27.2.12479018/toolchains/llvm/prebuilt/linux-x86_64/bin/clang++ --target=aarch64-none-linux-android30 --sysroot=/home/user/android/ndk/27.2.12479018/toolchains/llvm/prebuilt/linux-x86_64/sysroot  -I/home/user/Downloads/lanmessenger/lmc/include -I/home/user/Downloads/lanmessenger/lmc/src -isystem /home/user/Qt/6.9.2/android_arm64_v8a/include/QtCore -isystem /home/user/Qt/6.9.2/android_arm64_v8a/include/QtGui -isystem /home/user/Qt/6.9.2/android_arm64_v8a/include/QtWidgets -isystem /home/user/Qt/6.9.2/android_arm64_v8a/include/QtXml -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security   -O2 -g -DNDEBUG -fPIC -MD -MT lmc/CMakeFiles/lmc.dir/src/chatwindow.cpp.o -MF lmc/CMakeFiles/lmc.dir/src/chatwindow.cpp.o.d -o lmc/CMakeFiles/lmc.dir/src/chatwindow.cpp.o -c /home/user/Downloads/lanmessenger/lmc/src/chatwindow.cpp
+In file included from /home/user/Downloads/lanmessenger/lmc/src/chatwindow.cpp:25:
+In file included from /home/user/Qt/6.9.2/android_arm64_v8a/include/QtGui/QDesktopServices:1:
+/home/user/Qt/6.9.2/android_arm64_v8a/include/QtGui/qdesktopservices.h:7:10: fatal error: 'QtGui/qtguiglobal.h' file not found
+    7 | #include <QtGui/qtguiglobal.h>
+      |          ^~~~~~~~~~~~~~~~~~~~~
+1 error generated.
+[5/52] Building CXX object lmc/CMakeFiles/lmc.dir/src/crypto.cpp.o
+FAILED: lmc/CMakeFiles/lmc.dir/src/crypto.cpp.o 
+/home/user/android/ndk/27.2.12479018/toolchains/llvm/prebuilt/linux-x86_64/bin/clang++ --target=aarch64-none-linux-android30 --sysroot=/home/user/android/ndk/27.2.12479018/toolchains/llvm/prebuilt/linux-x86_64/sysroot  -I/home/user/Downloads/lanmessenger/lmc/include -I/home/user/Downloads/lanmessenger/lmc/src -isystem /home/user/Qt/6.9.2/android_arm64_v8a/include/QtCore -isystem /home/user/Qt/6.9.2/android_arm64_v8a/include/QtGui -isystem /home/user/Qt/6.9.2/android_arm64_v8a/include/QtWidgets -isystem /home/user/Qt/6.9.2/android_arm64_v8a/include/QtXml -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security   -O2 -g -DNDEBUG -fPIC -MD -MT lmc/CMakeFiles/lmc.dir/src/crypto.cpp.o -MF lmc/CMakeFiles/lmc.dir/src/crypto.cpp.o.d -o lmc/CMakeFiles/lmc.dir/src/crypto.cpp.o -c /home/user/Downloads/lanmessenger/lmc/src/crypto.cpp
+In file included from /home/user/Downloads/lanmessenger/lmc/src/crypto.cpp:25:
+In file included from /home/user/Downloads/lanmessenger/lmc/src/trace.h:28:
+In file included from /home/user/Qt/6.9.2/android_arm64_v8a/include/QtCore/QFile:1:
+/home/user/Qt/6.9.2/android_arm64_v8a/include/QtCore/qfile.h:9:10: fatal error: 'QtCore/qfiledevice.h' file not found
+    9 | #include <QtCore/qfiledevice.h>
+      |          ^~~~~~~~~~~~~~~~~~~~~~
+1 error generated.
+[6/52] Building CXX object lmc/CMakeFiles/lmc.dir/src/chatroomwindow.cpp.o
+FAILED: lmc/CMakeFiles/lmc.dir/src/chatroomwindow.cpp.o 
+/home/user/android/ndk/27.2.12479018/toolchains/llvm/prebuilt/linux-x86_64/bin/clang++ --target=aarch64-none-linux-android30 --sysroot=/home/user/android/ndk/27.2.12479018/toolchains/llvm/prebuilt/linux-x86_64/sysroot  -I/home/user/Downloads/lanmessenger/lmc/include -I/home/user/Downloads/lanmessenger/lmc/src -isystem /home/user/Qt/6.9.2/android_arm64_v8a/include/QtCore -isystem /home/user/Qt/6.9.2/android_arm64_v8a/include/QtGui -isystem /home/user/Qt/6.9.2/android_arm64_v8a/include/QtWidgets -isystem /home/user/Qt/6.9.2/android_arm64_v8a/include/QtXml -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security   -O2 -g -DNDEBUG -fPIC -MD -MT lmc/CMakeFiles/lmc.dir/src/chatroomwindow.cpp.o -MF lmc/CMakeFiles/lmc.dir/src/chatroomwindow.cpp.o.d -o lmc/CMakeFiles/lmc.dir/src/chatroomwindow.cpp.o -c /home/user/Downloads/lanmessenger/lmc/src/chatroomwindow.cpp
+In file included from /home/user/Downloads/lanmessenger/lmc/src/chatroomwindow.cpp:25:
+In file included from /home/user/Downloads/lanmessenger/lmc/src/chatroomwindow.h:28:
+In file included from /home/user/Qt/6.9.2/android_arm64_v8a/include/QtWidgets/QWidget:1:
+/home/user/Qt/6.9.2/android_arm64_v8a/include/QtWidgets/qwidget.h:7:10: fatal error: 'QtWidgets/qtwidgetsglobal.h' file not found
+    7 | #include <QtWidgets/qtwidgetsglobal.h>
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+1 error generated.
+ninja: build stopped: subcommand failed.

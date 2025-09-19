@@ -26,8 +26,10 @@
 #include <Windows.h>
 #include <QLibrary>
 #else
-#include <QSound>
-#include <QAudioDeviceInfo>
+#include <QMediaDevices>
+#include <QMediaPlayer>
+#include <QAudioOutput>
+#include <QAudioDevice>
 #endif
 #include "soundplayer.h"
 
@@ -56,17 +58,20 @@ bool lmcSoundPlayer::isAvailable()
 #ifdef Q_OS_WIN
     return sndPlaySoundFromDll != nullptr;
 #else
-    return QAudioDeviceInfo::availableDevices(QAudio::AudioOutput).isEmpty();
+    return QMediaDevices::audioOutputs().isEmpty();
 #endif
 }
 
-void lmcSoundPlayer::play(const QString &filename)
+void lmcSoundPlayer::play(const QString& filename)
 {
 #ifdef Q_OS_WIN
     if(sndPlaySoundFromDll)
         sndPlaySoundFromDll(filename.toStdString().c_str(), SND_ASYNC);
 #else
-    QSound::play(filename);
+    QMediaPlayer* player = new QMediaPlayer;
+    player->setSource(QUrl::fromLocalFile(filename));
+    player->setLoops(QMediaPlayer::Infinite); // Optional
+    player->play();
 #endif
 }
 

@@ -45,24 +45,18 @@
 ****************************************************************************/
 
 
+#ifndef QTSINGLEAPPLICATION_H
+#define QTSINGLEAPPLICATION_H
+
 #include <QApplication>
+#include <QtCore/qglobal.h>
 
 class QtLocalPeer;
 
-#if defined(Q_OS_WIN)
-#  if !defined(QT_QTSINGLEAPPLICATION_EXPORT) && !defined(QT_QTSINGLEAPPLICATION_IMPORT)
-#    define QT_QTSINGLEAPPLICATION_EXPORT __declspec(dllexport)
-#  elif defined(QT_QTSINGLEAPPLICATION_IMPORT)
-#    if defined(QT_QTSINGLEAPPLICATION_EXPORT)
-#      undef QT_QTSINGLEAPPLICATION_EXPORT
-#    endif
-#    define QT_QTSINGLEAPPLICATION_EXPORT __declspec(dllimport)
-#  elif defined(QT_QTSINGLEAPPLICATION_EXPORT)
-#    undef QT_QTSINGLEAPPLICATION_EXPORT
-#    define QT_QTSINGLEAPPLICATION_EXPORT __declspec(dllexport)
-#  endif
+#if defined(QT_QTSINGLEAPPLICATION_LIB)
+#  define QT_QTSINGLEAPPLICATION_EXPORT Q_DECL_EXPORT
 #else
-#  define QT_QTSINGLEAPPLICATION_EXPORT
+#  define QT_QTSINGLEAPPLICATION_EXPORT Q_DECL_IMPORT
 #endif
 
 class QT_QTSINGLEAPPLICATION_EXPORT QtSingleApplication : public QApplication
@@ -87,19 +81,19 @@ public:
 
     // Obsolete:
     void initialize(bool dummy = true)
-        { isRunning(); Q_UNUSED(dummy) }
+        { isRunning(); Q_UNUSED(dummy); }
 
 public Q_SLOTS:
     bool sendMessage(const QString &message, int timeout = 5000);
     void activateWindow();
 
-
 Q_SIGNALS:
     void messageReceived(const QString &message);
-
 
 private:
     void sysInit(const QString &appId = QString());
     QtLocalPeer *peer;
     QWidget *actWin;
 };
+
+#endif // QTSINGLEAPPLICATION_H

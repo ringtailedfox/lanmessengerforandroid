@@ -63,7 +63,7 @@ void Application::loadTranslations(const QDir& dir) {
 			translators.insert(locale, translator);
 		}
 	}
-        translators.insert(IDS_LANGUAGE_VAL, NULL);
+        translators.insert(IDS_LANGUAGE_VAL, nullptr);
 
 	// load system translations
 	QDir sysDir(dir.absolutePath() + "/system");

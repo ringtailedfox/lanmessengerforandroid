@@ -22,29 +22,30 @@
 ****************************************************************************/
 
 
-#include <QDesktopWidget>
+#include <QGuiApplication>
+#include <QScreen>
 #include "helpwindow.h"
 
 lmcHelpWindow::lmcHelpWindow(QRect* pRect, QWidget *parent) : QWidget(parent) {
-	ui.setupUi(this);
+    ui.setupUi(this);
 
-	//	Destroy the window when it closes
-	setAttribute(Qt::WA_DeleteOnClose, true);
+    setAttribute(Qt::WA_DeleteOnClose, true);
 
-	move(pRect->center() - rect().center());
-	QRect screenRect = QApplication::desktop()->screenGeometry();
-	if(!screenRect.contains(geometry(), true)) {
-		QRect windowRect = geometry();
-		if(windowRect.right() > screenRect.right())
-			windowRect.translate(screenRect.right() - windowRect.right(), 0);
-		if(windowRect.left() < screenRect.left())
-			windowRect.translate(qAbs(windowRect.left() - screenRect.left()), 0);
-		if(windowRect.bottom() > screenRect.bottom())
-			windowRect.translate(0, screenRect.bottom() - windowRect.bottom());
-		if(windowRect.top() < screenRect.top())
-			windowRect.translate(0, qAbs(windowRect.top() - screenRect.top()));
-		setGeometry(windowRect);
-	}
+    move(pRect->center() - rect().center());
+    QScreen* screen = QGuiApplication::primaryScreen();
+    QRect screenRect = screen->geometry();
+    if(!screenRect.contains(geometry(), true)) {
+        QRect windowRect = geometry();
+        if(windowRect.right() > screenRect.right())
+            windowRect.translate(screenRect.right() - windowRect.right(), 0);
+        if(windowRect.left() < screenRect.left())
+            windowRect.translate(qAbs(windowRect.left() - screenRect.left()), 0);
+        if(windowRect.bottom() > screenRect.bottom())
+            windowRect.translate(0, screenRect.bottom() - windowRect.bottom());
+        if(windowRect.top() < screenRect.top())
+            windowRect.translate(0, qAbs(windowRect.top() - screenRect.top()));
+        setGeometry(windowRect);
+    }
 
     ui.txtHelp->installEventFilter(this);
     ui.btnClose->installEventFilter(this);

@@ -1,0 +1,24 @@
+Option 1: Interactive Prompt Script
+
+This version asks questions step-by-step:
+
+#!/bin/bash
+
+echo "Choose architecture (e.g., armv7, arm64-v8a, x86, x86_64):"
+read ARCH
+
+echo "Choose operating system (e.g., android, linux, win32):"
+read OS
+
+echo "Choose version (e.g., 4.0, 13, win7):"
+read VERSION
+
+BUILD_STRING="${ARCH}-${OS}-${VERSION}"
+echo "Building for: $BUILD_STRING"
+
+# Call your build logic here
+./build_apks.sh --build="$BUILD_STRING"
+
+You could even loop and ask:
+
+echo "Any other combinations to compile for? (y/n)"

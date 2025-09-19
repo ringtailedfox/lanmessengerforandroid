@@ -138,8 +138,8 @@ void lmcSettingsDialog::init(void) {
 	ui.txtUDPPort->setValidator(pPortValidator);
 	ui.txtTCPPort->setValidator(pPortValidator);
 
-	ipRegExp = QRegExp("\\b(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\b");
-	pIpValidator = new QRegExpValidator(ipRegExp, this);
+	QRegularExpression ipRegExp(R"(\b(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\b)");
+	pIpValidator = new QRegularExpressionValidator(ipRegExp, this);
 	ui.txtMulticast->setValidator(pIpValidator);
 
     pMessageLog->setAutoScroll(false);
@@ -351,13 +351,13 @@ void lmcSettingsDialog::lvBroadcasts_currentRowChanged(int index) {
 }
 
 void lmcSettingsDialog::txtBroadcast_textEdited(const QString& text) {
-	ui.btnAddBroadcast->setEnabled(ipRegExp.exactMatch(text));
+	ui.btnAddBroadcast->setEnabled(ipRegExp.match(text).hasMatch());
 }
 
 void lmcSettingsDialog::btnAddBroadcast_clicked(void) {
 	QString address = ui.txtBroadcast->text();
 	//	Do not add if not a valid ip address
-	if(!ipRegExp.exactMatch(address))
+	if (!ipRegExp.match(address).hasMatch())
 		return;
 
 	//	Check if the same address is already present in the list
@@ -530,7 +530,7 @@ void lmcSettingsDialog::loadSettings(void) {
 	ui.chkTrimMessage->setChecked(pSettings->value(IDS_TRIMMESSAGE, IDS_TRIMMESSAGE_VAL).toBool());
     ui.chkClearOnClose->setChecked(pSettings->value(IDS_CLEARONCLOSE, IDS_CLEARONCLOSE_VAL).toBool());
 	font.fromString(pSettings->value(IDS_FONT, IDS_FONT_VAL).toString());
-	color.setNamedColor(pSettings->value(IDS_COLOR, IDS_COLOR_VAL).toString());
+	color = QColor::fromString(pSettings->value(IDS_COLOR, IDS_COLOR_VAL).toString());
 	fontSize = pSettings->value(IDS_FONTSIZE, IDS_FONTSIZE_VAL).toInt();
 	fontSize = qMin(FS_LARGE, qMax(FS_SMALL, fontSize));
 	ui.cboFontSize->setCurrentIndex(fontSize);

@@ -1,0 +1,23 @@
+{
+    "qt": "/home/user/Qt/6.9.2/android_arm64_v8a",
+    "sdk": "/home/user/android/sdk",
+    "ndk": "/home/user/android/ndk/27.2.12479018",
+    "toolchain-version": "clang",
+    "application-binary": "/home/user/Downloads/lanmessenger/build-arm64/lmcapp/lmcapp",
+    "android-package": "com.lmcapp.chat",
+    "android-version-name": "1.0",
+    "android-version-code": "1",
+    "deployment": {
+        "qml": false,
+        "resources": [],
+        "assets": [],
+        "libraries": []
+    },
+    "android-extra-libs": [],
+    "android-extra-plugins": [],
+    "target-architecture": "arm64-v8a",
+    "qml-imports": [],
+    "plugins": [],
+    "sdk-build-tools": "30.0.3",
+    "android-package-source-directory": "/home/user/Downloads/lanmessenger/android"
+}

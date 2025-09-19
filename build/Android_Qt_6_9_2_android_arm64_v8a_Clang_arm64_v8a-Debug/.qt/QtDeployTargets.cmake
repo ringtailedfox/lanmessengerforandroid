@@ -1,2 +1,0 @@
-set(__QT_DEPLOY_TARGET_lanmessenger_FILE /home/user/Downloads/lanmessenger/build/Android_Qt_6_9_2_android_arm64_v8a_Clang_arm64_v8a-Debug/lanmessenger)
-set(__QT_DEPLOY_TARGET_lanmessenger_TYPE EXECUTABLE)

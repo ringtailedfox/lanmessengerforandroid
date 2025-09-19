@@ -28,6 +28,7 @@
 #include "mainwindow.h"
 #include "messagelog.h"
 #include "history.h"
+#include <cstdlib>
 
 lmcMainWindow::lmcMainWindow(QWidget *parent, Qt::WindowFlags flags) : QWidget(parent, flags) {
 	ui.setupUi(this);
@@ -105,8 +106,8 @@ void lmcMainWindow::init(User* pLocalUser, QList<Group>* pGroupList, bool connec
 void lmcMainWindow::start(void) {
 	//	if no avatar is set, select a random avatar (useful when running for the first time)
 	if(nAvatar > AVT_COUNT) {
-		qsrand((uint)QTime::currentTime().msec());
-		nAvatar = qrand() % AVT_COUNT;
+        std::srand(QTime::currentTime().msec() & 0xFFFF);
+        nAvatar = std::rand() % AVT_COUNT;
 	}
 	// This method should only be called from here, otherwise an MT_Notify message is sent
 	// and the program will connect to the network before start() is called.
@@ -297,7 +298,7 @@ void lmcMainWindow::settingsChanged(bool init) {
 //			QSize itemSize = ui.tvUserList->view() == ULV_Detailed ? QSize(0, 36) : QSize(0, 20);
 //			childItem->setSizeHint(0, itemSize);
 
-			QString toolTip = statusToolTip ? lmcStrings::statusDesc()[childItem->data(0, StatusRole).toInt()] : QString::null;
+			QString toolTip = statusToolTip ? lmcStrings::statusDesc()[childItem->data(0, StatusRole).toInt()] : QString();
 			childItem->setToolTip(0, toolTip);
 		}
 	}
@@ -678,62 +679,119 @@ void lmcMainWindow::txtNote_lostFocus(void) {
 }
 
 void lmcMainWindow::createMainMenu(void) {
-	pMainMenu = new QMenuBar(this);
-	pFileMenu = pMainMenu->addMenu("&Messenger");
-	chatRoomAction = pFileMenu->addAction("&New Chat Room", this,
-		SLOT(chatRoomAction_triggered()), QKeySequence::New);
-	publicChatAction = pFileMenu->addAction(QIcon(QPixmap(IDR_CHATROOM, "PNG")), "&Public Chat",
-		this, SLOT(publicChatAction_triggered()));
-	pFileMenu->addSeparator();
-	refreshAction = pFileMenu->addAction(QIcon(QPixmap(IDR_REFRESH, "PNG")), "&Refresh contacts list", 
-		this, SLOT(refreshAction_triggered()), QKeySequence::Refresh);
-	pFileMenu->addSeparator();
-	exitAction = pFileMenu->addAction(QIcon(QPixmap(IDR_CLOSE, "PNG")), "E&xit", 
-		this, SLOT(trayExitAction_triggered()));
-	pToolsMenu = pMainMenu->addMenu("&Tools");
-	historyAction = pToolsMenu->addAction(QIcon(QPixmap(IDR_HISTORY, "PNG")), "&History", 
-		this, SLOT(trayHistoryAction_triggered()), QKeySequence(Qt::CTRL + Qt::Key_H));
-	transferAction = pToolsMenu->addAction(QIcon(QPixmap(IDR_TRANSFER, "PNG")), "File &Transfers", 
-		this, SLOT(trayFileAction_triggered()), QKeySequence(Qt::CTRL + Qt::Key_J));
-	pToolsMenu->addSeparator();
-	settingsAction = pToolsMenu->addAction(QIcon(QPixmap(IDR_TOOLS, "PNG")), "&Preferences", 
-		this, SLOT(traySettingsAction_triggered()), QKeySequence::Preferences);
-	pHelpMenu = pMainMenu->addMenu("&Help");
-	helpAction = pHelpMenu->addAction(QIcon(QPixmap(IDR_QUESTION, "PNG")), "&Help",
-		this, SLOT(helpAction_triggered()), QKeySequence::HelpContents);
-	pHelpMenu->addSeparator();
-	QString text = "%1 &online";
-	onlineAction = pHelpMenu->addAction(QIcon(QPixmap(IDR_WEB, "PNG")), text.arg(lmcStrings::appName()), 
-		this, SLOT(homePageAction_triggered()));
-	updateAction = pHelpMenu->addAction("Check for &Updates", this, SLOT(updateAction_triggered()));
-	aboutAction = pHelpMenu->addAction(QIcon(QPixmap(IDR_INFO, "PNG")), "&About", this, SLOT(trayAboutAction_triggered()));
+    pMainMenu = new QMenuBar(this);
 
-	layout()->setMenuBar(pMainMenu);
+    // Messenger menu
+    pFileMenu = pMainMenu->addMenu("&Messenger");
+
+    chatRoomAction = new QAction("&New Chat Room", this);
+    chatRoomAction->setShortcut(QKeySequence::New);
+    connect(chatRoomAction, &QAction::triggered, this, &lmcMainWindow::chatRoomAction_triggered);
+    pFileMenu->addAction(chatRoomAction);
+
+    publicChatAction = new QAction(QIcon(QPixmap(IDR_CHATROOM, "PNG")), "&Public Chat", this);
+    connect(publicChatAction, &QAction::triggered, this, &lmcMainWindow::publicChatAction_triggered);
+    pFileMenu->addAction(publicChatAction);
+
+    pFileMenu->addSeparator();
+
+    refreshAction = new QAction(QIcon(QPixmap(IDR_REFRESH, "PNG")), "&Refresh contacts list", this);
+    refreshAction->setShortcut(QKeySequence::Refresh);
+    connect(refreshAction, &QAction::triggered, this, &lmcMainWindow::refreshAction_triggered);
+    pFileMenu->addAction(refreshAction);
+
+    pFileMenu->addSeparator();
+
+    exitAction = new QAction(QIcon(QPixmap(IDR_CLOSE, "PNG")), "E&xit", this);
+    connect(exitAction, &QAction::triggered, this, &lmcMainWindow::trayExitAction_triggered);
+    pFileMenu->addAction(exitAction);
+
+    // Tools menu
+    pToolsMenu = pMainMenu->addMenu("&Tools");
+
+    historyAction = new QAction(QIcon(QPixmap(IDR_HISTORY, "PNG")), "&History", this);
+    historyAction->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_H));
+    connect(historyAction, &QAction::triggered, this, &lmcMainWindow::trayHistoryAction_triggered);
+    pToolsMenu->addAction(historyAction);
+
+    transferAction = new QAction(QIcon(QPixmap(IDR_TRANSFER, "PNG")), "File &Transfers", this);
+    transferAction->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_J));
+    connect(transferAction, &QAction::triggered, this, &lmcMainWindow::trayFileAction_triggered);
+    pToolsMenu->addAction(transferAction);
+
+    pToolsMenu->addSeparator();
+
+    settingsAction = new QAction(QIcon(QPixmap(IDR_TOOLS, "PNG")), "&Preferences", this);
+    settingsAction->setShortcut(QKeySequence::Preferences);
+    connect(settingsAction, &QAction::triggered, this, &lmcMainWindow::traySettingsAction_triggered);
+    pToolsMenu->addAction(settingsAction);
+
+    // Help menu
+    pHelpMenu = pMainMenu->addMenu("&Help");
+
+    helpAction = new QAction(QIcon(QPixmap(IDR_QUESTION, "PNG")), "&Help", this);
+    helpAction->setShortcut(QKeySequence::HelpContents);
+    connect(helpAction, &QAction::triggered, this, &lmcMainWindow::helpAction_triggered);
+    pHelpMenu->addAction(helpAction);
+
+    pHelpMenu->addSeparator();
+
+    QString text = "%1 &online";
+    onlineAction = new QAction(QIcon(QPixmap(IDR_WEB, "PNG")), text.arg(lmcStrings::appName()), this);
+    connect(onlineAction, &QAction::triggered, this, &lmcMainWindow::homePageAction_triggered);
+    pHelpMenu->addAction(onlineAction);
+
+    updateAction = new QAction("Check for &Updates", this);
+    connect(updateAction, &QAction::triggered, this, &lmcMainWindow::updateAction_triggered);
+    pHelpMenu->addAction(updateAction);
+
+    aboutAction = new QAction(QIcon(QPixmap(IDR_INFO, "PNG")), "&About", this);
+    connect(aboutAction, &QAction::triggered, this, &lmcMainWindow::trayAboutAction_triggered);
+    pHelpMenu->addAction(aboutAction);
+
+    layout()->setMenuBar(pMainMenu);
 }
 
 void lmcMainWindow::createTrayMenu(void) {
-	pTrayMenu = new QMenu(this);
-	
-	QString text = "&Show %1";
-	trayShowAction = pTrayMenu->addAction(QIcon(QPixmap(IDR_MESSENGER, "PNG")), text.arg(lmcStrings::appName()), 
-		this, SLOT(trayShowAction_triggered()));
-	pTrayMenu->addSeparator();
-	trayStatusAction = pTrayMenu->addMenu(pStatusMenu);
-	trayStatusAction->setText("&Change Status");
-	pTrayMenu->addSeparator();
-	trayHistoryAction = pTrayMenu->addAction(QIcon(QPixmap(IDR_HISTORY, "PNG")), "&History",
-		this, SLOT(trayHistoryAction_triggered()));
-	trayTransferAction = pTrayMenu->addAction(QIcon(QPixmap(IDR_TRANSFER, "PNG")), "File &Transfers",
-		this, SLOT(trayFileAction_triggered()));
-	pTrayMenu->addSeparator();
-	traySettingsAction = pTrayMenu->addAction(QIcon(QPixmap(IDR_TOOLS, "PNG")), "&Preferences",
-		this, SLOT(traySettingsAction_triggered()));
-	trayAboutAction = pTrayMenu->addAction(QIcon(QPixmap(IDR_INFO, "PNG")), "&About",
-		this, SLOT(trayAboutAction_triggered()));
-	pTrayMenu->addSeparator();
-	trayExitAction = pTrayMenu->addAction(QIcon(QPixmap(IDR_CLOSE, "PNG")), "E&xit", this, SLOT(trayExitAction_triggered()));
+    pTrayMenu = new QMenu(this);
 
-	pTrayMenu->setDefaultAction(trayShowAction);
+    QString text = "&Show %1";
+    trayShowAction = new QAction(QIcon(QPixmap(IDR_MESSENGER, "PNG")), text.arg(lmcStrings::appName()), this);
+    connect(trayShowAction, &QAction::triggered, this, &lmcMainWindow::trayShowAction_triggered);
+    pTrayMenu->addAction(trayShowAction);
+
+    pTrayMenu->addSeparator();
+
+    trayStatusAction = pTrayMenu->addMenu(pStatusMenu);
+    trayStatusAction->setText("&Change Status");
+
+    pTrayMenu->addSeparator();
+
+    trayHistoryAction = new QAction(QIcon(QPixmap(IDR_HISTORY, "PNG")), "&History", this);
+    connect(trayHistoryAction, &QAction::triggered, this, &lmcMainWindow::trayHistoryAction_triggered);
+    pTrayMenu->addAction(trayHistoryAction);
+
+    trayTransferAction = new QAction(QIcon(QPixmap(IDR_TRANSFER, "PNG")), "File &Transfers", this);
+    connect(trayTransferAction, &QAction::triggered, this, &lmcMainWindow::trayFileAction_triggered);
+    pTrayMenu->addAction(trayTransferAction);
+
+    pTrayMenu->addSeparator();
+
+    traySettingsAction = new QAction(QIcon(QPixmap(IDR_TOOLS, "PNG")), "&Preferences", this);
+    connect(traySettingsAction, &QAction::triggered, this, &lmcMainWindow::traySettingsAction_triggered);
+    pTrayMenu->addAction(traySettingsAction);
+
+    trayAboutAction = new QAction(QIcon(QPixmap(IDR_INFO, "PNG")), "&About", this);
+    connect(trayAboutAction, &QAction::triggered, this, &lmcMainWindow::trayAboutAction_triggered);
+    pTrayMenu->addAction(trayAboutAction);
+
+    pTrayMenu->addSeparator();
+
+    trayExitAction = new QAction(QIcon(QPixmap(IDR_CLOSE, "PNG")), "E&xit", this);
+    connect(trayExitAction, &QAction::triggered, this, &lmcMainWindow::trayExitAction_triggered);
+    pTrayMenu->addAction(trayExitAction);
+
+    pTrayMenu->setDefaultAction(trayShowAction);
 }
 
 void lmcMainWindow::createTrayIcon(void) {
@@ -749,7 +807,7 @@ void lmcMainWindow::createTrayIcon(void) {
 void lmcMainWindow::createStatusMenu(void) {
 	pStatusMenu = new QMenu(this);
 	statusGroup = new QActionGroup(this);
-	connect(statusGroup, SIGNAL(triggered(QAction*)), this, SLOT(statusAction_triggered(QAction*)));
+	connect(statusGroup, &QActionGroup::triggered, this, &lmcMainWindow::statusAction_triggered);
 
 	for(int index = 0; index < ST_COUNT; index++) {
 		QAction* pAction = new QAction(QIcon(QPixmap(statusPic[index], "PNG")), lmcStrings::statusDesc()[index], this);
@@ -766,73 +824,110 @@ void lmcMainWindow::createAvatarMenu(void) {
 	pAvatarMenu = new QMenu(this);
 
 	lmcImagePickerAction* pAction = new lmcImagePickerAction(this, avtPic, AVT_COUNT, 48, 4, &nAvatar);
-	connect(pAction, SIGNAL(triggered()), this, SLOT(avatarAction_triggered()));
+	connect(pAction, &lmcImagePickerAction::triggered, this, &lmcMainWindow::avatarAction_triggered);
 	pAvatarMenu->addAction(pAction);
 	pAvatarMenu->addSeparator();
-	avatarBrowseAction = pAvatarMenu->addAction("&Select picture...", this, SLOT(avatarBrowseAction_triggered()));
+	avatarBrowseAction = new QAction("&Select picture...", this);
+    connect(avatarBrowseAction, &QAction::triggered, this, &lmcMainWindow::avatarBrowseAction_triggered);
+    pAvatarMenu->addAction(avatarBrowseAction);
 
 	ui.btnAvatar->setMenu(pAvatarMenu);
 }
 
 void lmcMainWindow::createGroupMenu(void) {
-	pGroupMenu = new QMenu(this);
+    pGroupMenu = new QMenu(this);
 
-	groupAddAction = pGroupMenu->addAction("Add &New Group", this, SLOT(groupAddAction_triggered()));
-	pGroupMenu->addSeparator();
-	groupRenameAction = pGroupMenu->addAction("&Rename This Group", this, SLOT(groupRenameAction_triggered()));
-	groupDeleteAction = pGroupMenu->addAction("&Delete This Group", this, SLOT(groupDeleteAction_triggered()));
+    groupAddAction = new QAction("Add &New Group", this);
+    connect(groupAddAction, &QAction::triggered, this, &lmcMainWindow::groupAddAction_triggered);
+    pGroupMenu->addAction(groupAddAction);
+
+    pGroupMenu->addSeparator();
+
+    groupRenameAction = new QAction("&Rename This Group", this);
+    connect(groupRenameAction, &QAction::triggered, this, &lmcMainWindow::groupRenameAction_triggered);
+    pGroupMenu->addAction(groupRenameAction);
+
+    groupDeleteAction = new QAction("&Delete This Group", this);
+    connect(groupDeleteAction, &QAction::triggered, this, &lmcMainWindow::groupDeleteAction_triggered);
+    pGroupMenu->addAction(groupDeleteAction);
 }
 
 void lmcMainWindow::createUserMenu(void) {
-	pUserMenu = new QMenu(this);
+    pUserMenu = new QMenu(this);
 
-	userChatAction = pUserMenu->addAction("&Conversation", this, SLOT(userConversationAction_triggered()));
-	userFileAction = pUserMenu->addAction("Send &File", this, SLOT(userFileAction_triggered()));
-    userFolderAction = pUserMenu->addAction("Send a Fol&der", this, SLOT(userFolderAction_triggered()));
-	pUserMenu->addSeparator();
-	userBroadcastAction = pUserMenu->addAction("Send &Broadcast Message", this, SLOT(userBroadcastAction_triggered()));
-	pUserMenu->addSeparator();
-	userInfoAction = pUserMenu->addAction("Get &Information", this, SLOT(userInfoAction_triggered()));
+    userChatAction = new QAction("&Conversation", this);
+    connect(userChatAction, &QAction::triggered, this, &lmcMainWindow::userConversationAction_triggered);
+    pUserMenu->addAction(userChatAction);
+
+    userFileAction = new QAction("Send &File", this);
+    connect(userFileAction, &QAction::triggered, this, &lmcMainWindow::userFileAction_triggered);
+    pUserMenu->addAction(userFileAction);
+
+    userFolderAction = new QAction("Send a Fol&der", this);
+    connect(userFolderAction, &QAction::triggered, this, &lmcMainWindow::userFolderAction_triggered);
+    pUserMenu->addAction(userFolderAction);
+
+    pUserMenu->addSeparator();
+
+    userBroadcastAction = new QAction("Send &Broadcast Message", this);
+    connect(userBroadcastAction, &QAction::triggered, this, &lmcMainWindow::userBroadcastAction_triggered);
+    pUserMenu->addAction(userBroadcastAction);
+
+    pUserMenu->addSeparator();
+
+    userInfoAction = new QAction("Get &Information", this);
+    connect(userInfoAction, &QAction::triggered, this, &lmcMainWindow::userInfoAction_triggered);
+    pUserMenu->addAction(userInfoAction);
 }
 
 void lmcMainWindow::createToolBar(void) {
-	QToolBar* pStatusBar = new QToolBar(ui.frame);
-	pStatusBar->setStyleSheet("QToolBar { border: 0px; padding: 0px; }");
-	ui.statusLayout->insertWidget(0, pStatusBar);
-	QAction* pStatusAction = pStatusBar->addAction("");
-	btnStatus = (QToolButton*)pStatusBar->widgetForAction(pStatusAction);
-	btnStatus->setPopupMode(QToolButton::MenuButtonPopup);
+    QToolBar* pStatusBar = new QToolBar(ui.frame);
+    pStatusBar->setStyleSheet("QToolBar { border: 0px; padding: 0px; }");
+    ui.statusLayout->insertWidget(0, pStatusBar);
 
-	QToolBar* pToolBar = new QToolBar(ui.wgtToolBar);
-	pToolBar->setIconSize(QSize(40, 20));
-	ui.toolBarLayout->addWidget(pToolBar);
+    QAction* pStatusAction = new QAction("", this);
+    pStatusBar->addAction(pStatusAction);
+    btnStatus = qobject_cast<QToolButton*>(pStatusBar->widgetForAction(pStatusAction));
+    btnStatus->setPopupMode(QToolButton::MenuButtonPopup);
 
-	pToolBar->setToolButtonStyle(Qt::ToolButtonIconOnly);
-	toolChatAction = pToolBar->addAction(QIcon(QPixmap(IDR_CHAT, "PNG")), "&Conversation",
-		this, SLOT(userConversationAction_triggered()));
-	toolChatAction->setEnabled(false);
-	toolFileAction = pToolBar->addAction(QIcon(QPixmap(IDR_FILE, "PNG")), "Send &File",
-		this, SLOT(userFileAction_triggered()));
-	toolFileAction->setEnabled(false);
-	pToolBar->addSeparator();
-	toolBroadcastAction = pToolBar->addAction(QIcon(QPixmap(IDR_BROADCASTMSG, "PNG")), "Send &Broadcast Message",
-		this, SLOT(userBroadcastAction_triggered()));
-	pToolBar->addSeparator();
-	toolChatRoomAction = pToolBar->addAction(QIcon(QPixmap(IDR_NEWCHATROOM, "PNG")), "&New Chat Room",
-		this, SLOT(chatRoomAction_triggered()));
-	toolPublicChatAction = pToolBar->addAction(QIcon(QPixmap(IDR_CHATROOM, "PNG")), "&Public Chat",
-		this, SLOT(publicChatAction_triggered()));
+    QToolBar* pToolBar = new QToolBar(ui.wgtToolBar);
+    pToolBar->setIconSize(QSize(40, 20));
+    ui.toolBarLayout->addWidget(pToolBar);
+    pToolBar->setToolButtonStyle(Qt::ToolButtonIconOnly);
 
-	QToolButton* pButton = (QToolButton*)pToolBar->widgetForAction(toolChatAction);
-	pButton->setAutoRaise(false);
-	pButton = (QToolButton*)pToolBar->widgetForAction(toolFileAction);
-	pButton->setAutoRaise(false);
-	pButton = (QToolButton*)pToolBar->widgetForAction(toolBroadcastAction);
-	pButton->setAutoRaise(false);
-	pButton = (QToolButton*)pToolBar->widgetForAction(toolChatRoomAction);
-	pButton->setAutoRaise(false);
-	pButton = (QToolButton*)pToolBar->widgetForAction(toolPublicChatAction);
-	pButton->setAutoRaise(false);
+    toolChatAction = new QAction(QIcon(QPixmap(IDR_CHAT, "PNG")), "&Conversation", this);
+    connect(toolChatAction, &QAction::triggered, this, &lmcMainWindow::userConversationAction_triggered);
+    toolChatAction->setEnabled(false);
+    pToolBar->addAction(toolChatAction);
+
+    toolFileAction = new QAction(QIcon(QPixmap(IDR_FILE, "PNG")), "Send &File", this);
+    connect(toolFileAction, &QAction::triggered, this, &lmcMainWindow::userFileAction_triggered);
+    toolFileAction->setEnabled(false);
+    pToolBar->addAction(toolFileAction);
+
+    pToolBar->addSeparator();
+
+    toolBroadcastAction = new QAction(QIcon(QPixmap(IDR_BROADCASTMSG, "PNG")), "Send &Broadcast Message", this);
+    connect(toolBroadcastAction, &QAction::triggered, this, &lmcMainWindow::userBroadcastAction_triggered);
+    pToolBar->addAction(toolBroadcastAction);
+
+    pToolBar->addSeparator();
+
+    toolChatRoomAction = new QAction(QIcon(QPixmap(IDR_NEWCHATROOM, "PNG")), "&New Chat Room", this);
+    connect(toolChatRoomAction, &QAction::triggered, this, &lmcMainWindow::chatRoomAction_triggered);
+    pToolBar->addAction(toolChatRoomAction);
+
+    toolPublicChatAction = new QAction(QIcon(QPixmap(IDR_CHATROOM, "PNG")), "&Public Chat", this);
+    connect(toolPublicChatAction, &QAction::triggered, this, &lmcMainWindow::publicChatAction_triggered);
+    pToolBar->addAction(toolPublicChatAction);
+
+    // Set auto-raise for all tool buttons
+    QList<QAction*> actions = { toolChatAction, toolFileAction, toolBroadcastAction, toolChatRoomAction, toolPublicChatAction };
+    for (QAction* action : actions) {
+        if (QToolButton* button = qobject_cast<QToolButton*>(pToolBar->widgetForAction(action))) {
+            button->setAutoRaise(false);
+        }
+    }
 }
 
 void lmcMainWindow::setUIText(void) {

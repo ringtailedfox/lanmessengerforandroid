@@ -3,6 +3,8 @@ set(CMAKE_SYSTEM_NAME Android)
 if(NOT DEFINED ANDROID_ABI)
     set(ANDROID_ABI arm64-v8a)
 endif()
+set(NDK_TRIPLE aarch64-linux-android CACHE STRING "NDK triple")
+message(STATUS "Toolchain sees ANDROID_ABI as: ${ANDROID_ABI}")
 
 if(NOT DEFINED ANDROID_API_LEVEL)
     set(ANDROID_API_LEVEL 35)
@@ -13,8 +15,8 @@ set(CMAKE_ANDROID_API ${ANDROID_API_LEVEL})
 
 # Set platform string for NDK sysroot
 set(ANDROID_PLATFORM android-${ANDROID_API_LEVEL})
-
-set(NDK_TRIPLE CACHE STRING "NDK triple")
+set(NDK_TRIPLE "aarch64-linux-android")
+set(NDK_TRIPLE "${NDK_TRIPLE}" CACHE STRING "NDK triple")
 set(ANDROID_NDK_ROOT CACHE PATH "Android NDK root")
 
 message(STATUS "Using Android ABI: ${ANDROID_ABI}")

@@ -26,7 +26,8 @@
 
 QString GroupId = "PARTICIPANTS";
 
-lmcChatRoomWindow::lmcChatRoomWindow(QWidget *parent) : QWidget(parent) {
+lmcChatRoomWindow::lmcChatRoomWindow(QWidget *parent, Qt::WindowFlags flags)
+    : QWidget(parent, flags) {
 	ui.setupUi(this);
 	setAcceptDrops(true);
 
@@ -64,8 +65,8 @@ lmcChatRoomWindow::lmcChatRoomWindow(QWidget *parent) : QWidget(parent) {
 	dataSaved = false;
 	windowLoaded = false;
 
-	localId = QString::null;
-	localName = QString::null;
+	localId = QString();
+	localName = QString();
 }
 
 lmcChatRoomWindow::~lmcChatRoomWindow() {
@@ -121,7 +122,12 @@ void lmcChatRoomWindow::init(User* pLocalUser, bool connected, QString thread) {
 	QFont font = QApplication::font();
 	font.fromString(pSettings->value(IDS_FONT, IDS_FONT_VAL).toString());
 	messageColor = QApplication::palette().text().color();
-	messageColor.setNamedColor(pSettings->value(IDS_COLOR, IDS_COLOR_VAL).toString());
+	QString colorStr = pSettings->value(IDS_COLOR, IDS_COLOR_VAL).toString();
+    QColor parsedColor = QColor::fromString(colorStr);
+    if (parsedColor.isValid())
+        messageColor = parsedColor;
+    else
+    messageColor = QColor(Qt::black); // or any fallback color you prefer
 	sendKeyMod = pSettings->value(IDS_SENDKEYMOD, IDS_SENDKEYMOD_VAL).toBool();
 
 	if(!groupMode) {
@@ -485,7 +491,7 @@ void lmcChatRoomWindow::btnSave_clicked(void) {
 		if(!file.open(QIODevice::WriteOnly | QIODevice::Text))
 			return;
 		QTextStream stream(&file);
-		stream.setCodec("UTF-8");
+		stream.setEncoding(QStringConverter::Utf8);
 		stream.setGenerateByteOrderMark(true);
 		if(fileName.endsWith(".html", Qt::CaseInsensitive))
 			stream << pMessageLog->prepareMessageLogForSave();
@@ -705,7 +711,7 @@ void lmcChatRoomWindow::showStatus(int flag, bool add) {
 		ui.lblInfo->setText("<span style='color:rgb(96,96,96);'>" + tr("You are no longer connected.") + "</span>");
 		ui.lblInfo->setVisible(true);
 	} else {
-		ui.lblInfo->setText(QString::null);
+		ui.lblInfo->setText(QString());
 		ui.lblInfo->setVisible(false);
 	}
 

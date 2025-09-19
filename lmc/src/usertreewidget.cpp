@@ -1,11 +1,11 @@
 /****************************************************************************
 **
 ** This file is part of LAN Messenger.
-** 
+**
 ** Copyright (c) 2010 - 2012 Qualia Digital Solutions.
-** 
+**
 ** Contact:  qualiatech@gmail.com
-** 
+**
 ** LAN Messenger is free software: you can redistribute it and/or modify
 ** it under the terms of the GNU General Public License as published by
 ** the Free Software Foundation, either version 3 of the License, or
@@ -120,7 +120,7 @@ void lmcUserTreeWidgetDelegate::paint(QPainter* painter, const QStyleOptionViewI
 		int leftPad = checkBoxRect.width() > 0 ? checkBoxRect.right() + 16 : 16;
 		QRect textRect = itemRect.adjusted(leftPad, padding, -5, -padding);
 		painter->setPen(QPen(palette.color(QPalette::HighlightedText)));
-		QString text = elidedText(painter->fontMetrics(), textRect.width(), Qt::ElideRight, name);
+		QString text = painter->fontMetrics().elidedText(name, Qt::ElideRight, textRect.width());
 		painter->drawText(textRect, textFlags, text);
 	} else if(type == "User") {
 		QColor fillColor, borderColor;
@@ -168,7 +168,7 @@ void lmcUserTreeWidgetDelegate::paint(QPainter* painter, const QStyleOptionViewI
 		textFlags |= (pTreeWidget->view() == ULV_Detailed ? Qt::AlignTop : Qt::AlignVCenter);
 		//	Leave a padding of 5px on left and right
 		QRect textRect = itemRect.adjusted(statusRect.right() + 5, padding, -(5 + avatarRect.width() + padding), -padding);
-		QString text = elidedText(painter->fontMetrics(), textRect.width(), Qt::ElideRight, name);
+		QString text = painter->fontMetrics().elidedText(name, Qt::ElideRight, textRect.width());
 		painter->drawText(textRect, textFlags, text);
 
 		//	Draw sub text
@@ -178,7 +178,7 @@ void lmcUserTreeWidgetDelegate::paint(QPainter* painter, const QStyleOptionViewI
 				QString userNote = note.toString();
                 painter->setPen(QPen(GRAY_TEXT_COLOR));
 				textFlags = Qt::AlignLeft | Qt::AlignBottom;
-				text = elidedText(painter->fontMetrics(), textRect.width(), Qt::ElideRight, userNote);
+				text = painter->fontMetrics().elidedText(userNote, Qt::ElideRight, textRect.width());
 				painter->drawText(textRect, textFlags, text);
 			}
 		}
@@ -237,12 +237,12 @@ void lmcUserTreeWidget::setView(UserListView view) {
 
 void lmcUserTreeWidget::mousePressEvent(QMouseEvent* event) {
 	if(event->button() == Qt::LeftButton) {
-		QTreeWidgetItem* item = itemAt(event->pos());
+		QTreeWidgetItem* item = itemAt(event->position().toPoint());
 
 		dragGroup = false;
 		dragUser = false;
 		dragItem = NULL;
-		parentId = QString::null;
+		parentId.clear();
 		expanded = false;
 
 		if(item) {
@@ -264,15 +264,15 @@ void lmcUserTreeWidget::mousePressEvent(QMouseEvent* event) {
 void lmcUserTreeWidget::dragMoveEvent(QDragMoveEvent* event) {
 	QTreeWidget::dragMoveEvent(event);
 
-	QTreeWidgetItem* item = itemAt(event->pos());
+	QTreeWidgetItem* item = itemAt(event->position().toPoint());
 	bool accept = false;
 
 	if(dragUser) {
-		if(item && dynamic_cast<lmcUserTreeWidgetGroupItem*>(item) && visualItemRect(item).contains(event->pos(), true))
+		if(item && dynamic_cast<lmcUserTreeWidgetGroupItem*>(item) && visualItemRect(item).contains(event->position().toPoint(), true))
 			accept = true;
 	}
 	else if(dragGroup) {
-		if(!item || (dynamic_cast<lmcUserTreeWidgetGroupItem*>(item) && !visualItemRect(item).contains(event->pos(), true)))
+		if(!item || (dynamic_cast<lmcUserTreeWidgetGroupItem*>(item) && !visualItemRect(item).contains(event->position().toPoint(), true)))
 			accept = true;
 	}
 
@@ -281,7 +281,7 @@ void lmcUserTreeWidget::dragMoveEvent(QDragMoveEvent* event) {
 
 void lmcUserTreeWidget::dropEvent(QDropEvent* event) {
 	QTreeWidget::dropEvent(event);
-		
+
 	if(dragUser) {
 		if(!dragItem->parent()) {
 		//	user item dragged to group level. revert
@@ -321,7 +321,7 @@ void lmcUserTreeWidget::contextMenuEvent(QContextMenuEvent* event) {
 void lmcUserTreeWidget::mouseReleaseEvent(QMouseEvent* event) {
 	QTreeWidget::mouseReleaseEvent(event);
 
-	QPoint pos = event->pos();
+	QPoint pos = event->position().toPoint();
     lmcUserTreeWidgetItem* item = static_cast<lmcUserTreeWidgetItem*>(itemAt(pos));
 	if(item && checkable() && item->checkBoxRect(visualItemRect(item)).contains(pos)) {
 		// toggle checkstate
@@ -346,3 +346,4 @@ void lmcUserTreeWidget::keyPressEvent(QKeyEvent* event) {
 		}
 	}
 }
+

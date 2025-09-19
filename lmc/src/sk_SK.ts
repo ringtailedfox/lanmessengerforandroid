@@ -1595,12 +1595,12 @@ Súbor neexistuje alebo nie je kompatibilný s touto verziou programu %2.</trans
 <context>
     <name>lmcStrings</name>
     <message>
-        <location filename="strings.cpp" line="55"/>
+        <location filename="lmc_strings.cpp" line="55"/>
         <source>LAN Messenger</source>
         <translation>LAN komunikátor</translation>
     </message>
     <message>
-        <location filename="strings.cpp" line="61"/>
+        <location filename="lmc_strings.cpp" line="61"/>
         <source>LAN Messenger is a free peer-to-peer messaging application for
 intra-network communication and does not require a server.
 LAN Messenger works on essentially every popular desktop platform.</source>
@@ -1609,132 +1609,132 @@ vnútrosieťovú komunikáciu a nevyžaduje server.
 LAN komunikátor funguje na každej populárnej desktopovej platforme.</translation>
     </message>
     <message>
-        <location filename="strings.cpp" line="69"/>
+        <location filename="lmc_strings.cpp" line="69"/>
         <source>Automatic</source>
         <translation>Automaticky</translation>
     </message>
     <message>
-        <location filename="strings.cpp" line="75"/>
+        <location filename="lmc_strings.cpp" line="75"/>
         <source>Small text</source>
         <translation>Malé písmo</translation>
     </message>
     <message>
-        <location filename="strings.cpp" line="76"/>
+        <location filename="lmc_strings.cpp" line="76"/>
         <source>Medium text</source>
         <translation>Stredné pismo</translation>
     </message>
     <message>
-        <location filename="strings.cpp" line="77"/>
+        <location filename="lmc_strings.cpp" line="77"/>
         <source>Large text</source>
         <translation>Veľké písmo</translation>
     </message>
     <message>
-        <location filename="strings.cpp" line="84"/>
+        <location filename="lmc_strings.cpp" line="84"/>
         <source>Available</source>
         <translation>K dispozícií</translation>
     </message>
     <message>
-        <location filename="strings.cpp" line="85"/>
+        <location filename="lmc_strings.cpp" line="85"/>
         <source>Busy</source>
         <translation>Zaneprázdnený</translation>
     </message>
     <message>
-        <location filename="strings.cpp" line="86"/>
+        <location filename="lmc_strings.cpp" line="86"/>
         <source>Do Not Disturb</source>
         <translation>Prosím nerušiť</translation>
     </message>
     <message>
-        <location filename="strings.cpp" line="87"/>
+        <location filename="lmc_strings.cpp" line="87"/>
         <source>Be Right Back</source>
         <translation>Hneď sa vrátim</translation>
     </message>
     <message>
-        <location filename="strings.cpp" line="88"/>
+        <location filename="lmc_strings.cpp" line="88"/>
         <source>Away</source>
         <translation>Preč</translation>
     </message>
     <message>
-        <location filename="strings.cpp" line="89"/>
+        <location filename="lmc_strings.cpp" line="89"/>
         <source>Appear Offline</source>
         <translation>Neviditeľný</translation>
     </message>
     <message>
-        <location filename="strings.cpp" line="96"/>
+        <location filename="lmc_strings.cpp" line="96"/>
         <source>Incoming message</source>
         <translation>Prichádzajúca správa</translation>
     </message>
     <message>
-        <location filename="strings.cpp" line="97"/>
+        <location filename="lmc_strings.cpp" line="97"/>
         <source>User is online</source>
         <translation>Používateľ je online</translation>
     </message>
     <message>
-        <location filename="strings.cpp" line="98"/>
+        <location filename="lmc_strings.cpp" line="98"/>
         <source>User is offline</source>
         <translation>Používateľ je offline</translation>
     </message>
     <message>
-        <location filename="strings.cpp" line="99"/>
+        <location filename="lmc_strings.cpp" line="99"/>
         <source>Incoming file transfer</source>
         <translation>Prichádzajúci súbor</translation>
     </message>
     <message>
-        <location filename="strings.cpp" line="100"/>
+        <location filename="lmc_strings.cpp" line="100"/>
         <source>File transfer completed</source>
         <translation>Prenos súboru ukončený</translation>
     </message>
     <message>
-        <location filename="strings.cpp" line="101"/>
+        <location filename="lmc_strings.cpp" line="101"/>
         <source>Incoming public message</source>
         <translation>Prichádzajúca hromadná správa</translation>
     </message>
     <message>
-        <location filename="strings.cpp" line="108"/>
+        <location filename="lmc_strings.cpp" line="108"/>
         <source>5 minutes</source>
         <translation>5 minút</translation>
     </message>
     <message>
-        <location filename="strings.cpp" line="109"/>
+        <location filename="lmc_strings.cpp" line="109"/>
         <source>10 minutes</source>
         <translation>10 minút</translation>
     </message>
     <message>
-        <location filename="strings.cpp" line="110"/>
+        <location filename="lmc_strings.cpp" line="110"/>
         <source>15 minutes</source>
         <translation>15 minút</translation>
     </message>
     <message>
-        <location filename="strings.cpp" line="111"/>
+        <location filename="lmc_strings.cpp" line="111"/>
         <source>20 minutes</source>
         <translation>20 minút</translation>
     </message>
     <message>
-        <location filename="strings.cpp" line="112"/>
+        <location filename="lmc_strings.cpp" line="112"/>
         <source>30 minutes</source>
         <translation>30 minút</translation>
     </message>
     <message>
-        <location filename="strings.cpp" line="113"/>
+        <location filename="lmc_strings.cpp" line="113"/>
         <source>45 minutes</source>
         <translation>45 minút</translation>
     </message>
     <message>
-        <location filename="strings.cpp" line="114"/>
+        <location filename="lmc_strings.cpp" line="114"/>
         <source>60 minutes</source>
         <translation>60 minút</translation>
     </message>
     <message>
-        <location filename="strings.cpp" line="115"/>
+        <location filename="lmc_strings.cpp" line="115"/>
         <source>Never</source>
         <translation>Nikdy</translation>
     </message>
     <message>
-        <location filename="strings.cpp" line="122"/>
+        <location filename="lmc_strings.cpp" line="122"/>
         <source>Detailed</source>
         <translation>Podrobný</translation>
     </message>
     <message>
-        <location filename="strings.cpp" line="123"/>
+        <location filename="lmc_strings.cpp" line="123"/>
         <source>Compact</source>
         <translation>Kompaktný</translation>
     </message>

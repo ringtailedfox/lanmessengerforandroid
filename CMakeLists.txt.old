@@ -1,0 +1,73 @@
+cmake_minimum_required(VERSION 3.22)
+project(LANMessenger)
+
+set(CMAKE_AUTOMOC ON)
+set(CMAKE_AUTORCC ON)
+set(CMAKE_AUTOUIC ON)
+
+set(ANDROID_ABI "arm64-v8a" CACHE STRING "Target ABI")
+message(STATUS "CMake sees ANDROID_ABI as: ${ANDROID_ABI}")
+
+set(Qt6_DIR "/home/user/Qt/6.9.2/android_arm64_v8a/lib/cmake/Qt6" CACHE PATH "Qt6 config path")
+
+set(Qt6_VERSION 6.9.2)
+find_package(Qt6 6.9.2 REQUIRED COMPONENTS Core Gui Widgets Network)
+
+
+if(NOT ANDROID_ABI STREQUAL "arm64-v8a")
+    message(FATAL_ERROR "CMake, YOU WILL RESPECT MAH ARCHITECTAH!")
+endif()
+
+add_subdirectory(lmc)
+add_subdirectory(lmcapp)
+
+
+set(PROJECT_SOURCES
+    lmc/src/main.cpp
+    lmcapp/src/mainwindow.cpp
+    lmcapp/src/mainwindow.ui
+    lmcapp/src/dialog.ui
+    # Add other .cpp/.ui files here
+)
+
+
+# === Target Definition ===
+if(ANDROID)
+    qt_add_library(LANMessengerForAndroid SHARED
+        ${PROJECT_SOURCES}
+    )
+
+    target_link_libraries(LANMessengerForAndroid PRIVATE
+        Qt6::Core
+        Qt${QT_VERSION_MAJOR}::Widgets
+        lmc
+        lmcapp
+    )
+
+    target_include_directories(LANMessengerForAndroid PRIVATE
+        ${CMAKE_SOURCE_DIR}/lmc/include
+        ${CMAKE_SOURCE_DIR}/lmc/src
+        ${CMAKE_SOURCE_DIR}/lmcapp/include
+    )
+
+    set_property(TARGET LANMessengerForAndroid APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR
+                 ${CMAKE_CURRENT_SOURCE_DIR}/android)
+
+    qt_finalize_target(LANMessengerForAndroid)
+
+else()
+    qt_add_executable(LANMessengerForAndroid
+        MANUAL_FINALIZATION
+        ${PROJECT_SOURCES}
+    )
+
+    target_include_directories(LANMessengerForAndroid PRIVATE
+        ${CMAKE_SOURCE_DIR}/lmc/include
+        ${CMAKE_SOURCE_DIR}/lmc/src
+        ${CMAKE_SOURCE_DIR}/lmcapp/include
+        ${CMAKE_SOURCE_DIR}/lmcapp/src
+    )
+
+    qt_finalize_executable(LANMessengerForAndroid)
+endif()
+

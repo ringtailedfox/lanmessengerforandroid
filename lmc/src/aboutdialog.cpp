@@ -22,7 +22,7 @@
 ****************************************************************************/
 
 
-#include <QDesktopWidget>
+// #include <QDesktopWidget> This causes builds to fail in Qt6 and above, since QDesktopWidget was removed in Qt6
 #include <QFile>
 #include "aboutdialog.h"
 
